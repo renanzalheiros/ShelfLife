@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
 		pdvs.add("PDV 4")
 		pdvs.add("PDV 5")
 
-		pdv_list.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pdvs)
-		pdv_list.setOnItemClickListener { _, _, position, _ ->
-			val intent = Intent(this, LoteShelfLife::class.java)
-			intent.putExtra("pdv", position)
-			startActivity(intent)
-		}
+//		pdv_list.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pdvs)
+//		pdv_list.setOnItemClickListener { _, _, position, _ ->
+//			val intent = Intent(this, LoteShelfLife::class.java)
+//			intent.putExtra("pdv", position)
+//			startActivity(intent)
+//		}
 	}
 }
