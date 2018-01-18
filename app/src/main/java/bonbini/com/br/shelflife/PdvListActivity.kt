@@ -6,11 +6,14 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import bonbini.com.br.shelflife.adapter.PdvListAdapter
 import kotlinx.android.synthetic.main.activity_pdv_list.*
-import kotlinx.android.synthetic.main.app_bar_pdv_list.*
 import kotlinx.android.synthetic.main.content_pdv_list.*
 
 class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -20,12 +23,9 @@ class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_pdv_list)
+		toolbar.title = getString(R.string.app_name)
 		setSupportActionBar(toolbar)
 
-//		fab.setOnClickListener { view ->
-//			Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//					.setAction("Action", null).show()
-//		}
 
 		val toggle = ActionBarDrawerToggle(
 				this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -34,18 +34,22 @@ class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
 		nav_view.setNavigationItemSelectedListener(this)
 
-		pdvs.add("PDV 1")
-		pdvs.add("PDV 2")
-		pdvs.add("PDV 3")
-		pdvs.add("PDV 4")
-		pdvs.add("PDV 5")
+		pdvs.add("Supermercado Angeloni Capoeiras")
+		pdvs.add("Hippo Supermercados Centro")
+		pdvs.add("Supermercado Baia Sul")
+		pdvs.add("Supermercado Angeloni Beira-Mar")
+		pdvs.add("Fort Atacadista")
+		pdvs.add("Makro Atacadista")
+		pdvs.add("Supermercado Big Iguatemi")
+		pdvs.add("Supermercado Hippo Coqueiros")
+		pdvs.add("Supermercado Angeloni Rio Branco")
+		pdvs.add("Supermercado Bistek")
+		pdvs.add("Giassi Supermercado")
+		pdvs.add("Mercado Martins")
+		pdvs.add("Supermercado Ok")
 
-		pdv_list.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, pdvs)
-		pdv_list.setOnItemClickListener { _, _, position, _ ->
-			val intent = Intent(this, LoteShelfLife::class.java)
-			intent.putExtra("pdv", position)
-			startActivity(intent)
-		}
+		listViewPdv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+		listViewPdv.adapter = PdvListAdapter(pdvs)
 	}
 
 	override fun onBackPressed() {
