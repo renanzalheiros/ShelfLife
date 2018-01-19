@@ -1,13 +1,18 @@
 package bonbini.com.br.shelflife.adapter
 
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import bonbini.com.br.shelflife.R
 import bonbini.com.br.shelflife.formataParaBrasileiro
 import bonbini.com.br.shelflife.model.Lote
 import kotlinx.android.synthetic.main.adapter_lote_row.view.*
+import java.math.BigDecimal
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LoteListAdapter(private val loteList: MutableList<Lote>) : RecyclerView.Adapter<LoteListAdapter.ViewHolder>() {
@@ -41,6 +46,16 @@ class LoteListAdapter(private val loteList: MutableList<Lote>) : RecyclerView.Ad
 				hoje.after(item.vencimento) -> itemView.vencimento.setTextColor(itemView.context.resources.getColor(R.color.colorPrimaryDark))
 				else -> itemView.vencimento.setTextColor(itemView.context.resources.getColor(R.color.yellow))
 			}
+			itemView.setOnClickListener({ _ ->
+				AlertDialog.Builder(itemView.context)
+						.setTitle("Dar baixa?")
+						.setView(R.layout.dialog_alert)
+						.setPositiveButton("Confirmar", { _, _ ->
+						})
+						.setNegativeButton("Cancelar", { _, _ ->
+						})
+						.show()
+			})
 		}
 	}
 }
