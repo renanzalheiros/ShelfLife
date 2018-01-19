@@ -1,16 +1,14 @@
 package bonbini.com.br.shelflife
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import bonbini.com.br.shelflife.adapter.PdvListAdapter
 import kotlinx.android.synthetic.main.activity_pdv_list.*
@@ -19,6 +17,7 @@ import kotlinx.android.synthetic.main.content_pdv_list.*
 class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 	private val pdvs = mutableListOf<String>()
+	private lateinit var adapter: PdvListAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -49,7 +48,8 @@ class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 		pdvs.add("Supermercado Ok")
 
 		listViewPdv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-		listViewPdv.adapter = PdvListAdapter(pdvs)
+		adapter = PdvListAdapter(pdvs)
+		listViewPdv.adapter = adapter
 	}
 
 	override fun onBackPressed() {
@@ -63,6 +63,23 @@ class PdvListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		menuInflater.inflate(R.menu.pdv_list, menu)
+		val searchItem = menu.findItem(R.id.action_search)
+		val searchView = searchItem.actionView as SearchView
+
+		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+			override fun onQueryTextSubmit(query: String?): Boolean {
+				val filter = adapter.filter
+				filter.filter(query)
+				return false
+			}
+
+			override fun onQueryTextChange(newText: String?): Boolean {
+				val filter = adapter.filter
+				filter.filter(newText)
+				return false
+			}
+
+		})
 		return true
 	}
 

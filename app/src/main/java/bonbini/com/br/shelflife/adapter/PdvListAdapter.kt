@@ -5,22 +5,48 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import bonbini.com.br.shelflife.R
 import bonbini.com.br.shelflife.SkuListActivity
 import kotlinx.android.synthetic.main.adapter_pdvlist_row.view.*
 
-class PdvListAdapter(private val pdvList: MutableList<String>) : RecyclerView.Adapter<PdvListAdapter.ViewHolder>() {
+class PdvListAdapter(private var pdvList: MutableList<String>) : RecyclerView.Adapter<PdvListAdapter.ViewHolder>(), Filterable {
+
+	private var tempRows = pdvList
+
+	override fun getFilter(): Filter {
+		return object : Filter() {
+			override fun performFiltering(constraint: CharSequence?): FilterResults {
+				val filterResults = FilterResults()
+				val filteredArrayList = ArrayList<String>()
+				constraint.toString().toLowerCase()
+				pdvList.filterTo(filteredArrayList) { it.toLowerCase().contains(constraint.toString().toLowerCase()) }
+
+				filterResults.count = filteredArrayList.size
+				filterResults.values = filteredArrayList
+
+				return filterResults
+			}
+
+			override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+				tempRows = results!!.values as MutableList<String>
+				notifyDataSetChanged()
+			}
+
+		}
+	}
 
 	override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
 		return ViewHolder(LayoutInflater.from(parent!!.context).inflate(R.layout.adapter_pdvlist_row, parent, false))
 	}
 
 	override fun getItemCount(): Int {
-		return pdvList.size
+		return tempRows.size
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-		holder!!.bindItems(pdvList[position], position)
+		holder!!.bindItems(tempRows[position], position)
 	}
 
 	class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
